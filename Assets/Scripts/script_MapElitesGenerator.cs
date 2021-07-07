@@ -20,7 +20,7 @@ public class script_MapElitesGenerator : MonoBehaviour
     private RUNTYPE currRunType = RUNTYPE.THvSC;
 
     // How many generative steps we do before termination
-    private int stepCount = 10000;
+    private int stepCount = 80000;
     //Size of Map elites grid. Always a square n by n grid
     private int gridSize = 20;
 
@@ -74,7 +74,12 @@ public class script_MapElitesGenerator : MonoBehaviour
 
 
         }
-        return mapElitesGrid;
+
+        return buildingifyGrid(mapElitesGrid);
+        
+        //mapElitesTown notBuilding = getRandomLevelFromGrid(mapElitesGrid);
+        //mapElitesTown building = ConvertToBuildings(notBuilding.getRepresentation());
+        //return new mapElitesTown[]{notBuilding, building};
     }
 
     //Generate random starting town in the form of a 2D int matrix
@@ -319,6 +324,125 @@ public class script_MapElitesGenerator : MonoBehaviour
         }
 
         return total;
+    }
+
+    //Algorithm for turning a messy 2D int matrix into more distinct buildings with streets in between each
+    private mapElitesTown ConvertToBuildings(int[,] townRep){
+
+        int[,] outputRep = (int[,])townRep.Clone();
+
+        ArrayList buildingList = new ArrayList();
+
+        //Loop through all building heights 
+        for (int i = maxBuildingHeight; i>0 ; i--){
+
+            //Loop through all cells, looking for cells with that height
+            for (int x = 0; x<outputRep.GetLength(0); x++){
+                for (int y = 0; y<outputRep.GetLength(1); y++){
+                    //Logic for if we have found a cell with the current height
+                    if(outputRep[x,y]== i&&outputRep[x,y]!=0){
+                        //Store north west corner of building triangle
+                        int[] nwC = new int[] {x,y};
+                        //Create storage for south east corner
+                        int[] seC = new int[] {x,y};
+
+                        bool stillInBuildingy = true;
+                        bool stillInBuildingx = true;
+                        //Find limits of the building
+                        for (int xl = x; xl<outputRep.GetLength(0); xl++){
+                            for (int yl = y; yl<outputRep.GetLength(1); yl++){
+                                if((outputRep[xl,yl]== i)&&stillInBuildingy&&stillInBuildingx){
+                                    if (xl>seC[0]){
+                                        seC[0] = xl;
+                                    }
+                                    seC[0] = xl;
+                                    seC[1] = yl;
+                                }
+                                else{
+                                    stillInBuildingy = false;
+                                    stillInBuildingx = false;
+                                }
+                            }
+                            stillInBuildingy = true;
+                        }
+
+                        //Create building and add it to list
+                        buildingList.Add(new building(nwC, seC, i));
+
+                        //Set everything around to street level
+                        //First check which edges we are next to
+                        bool northFree = ((nwC[0])>0);
+                        bool southFree = (seC[0]<outputRep.GetLength(0)-1);
+                        bool westFree = ((nwC[1])>0);
+                        bool eastFree = (seC[1]<outputRep.GetLength(1)-1);
+                        Debug.Log("Building found. Height: " + i +". NW Corner: " + nwC[0]+","+nwC[1] + ". SE Corner: " + seC[0]+","+seC[1]+
+                            "NorthFree: " + northFree + ". SouthFree: " + southFree +"Westfree: "+ westFree + ". Eastfree: " + eastFree);
+                        //Loop through surrounding tiles
+                        if (northFree){
+                            for (int n = nwC[1]; n < seC[1]+1; n ++){
+                                Debug.Log("North Leveling: " + (nwC[0]-1) +","+n + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
+                                outputRep[(nwC[0]-1),n]=0;
+                            }
+                        }
+                        if (southFree){
+                            for (int n = nwC[1]; n < seC[1]+1; n ++){
+                                Debug.Log("South Leveling: " + (seC[0]+1) +","+n + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
+                                outputRep[(seC[0]+1), n]=0;
+                            }
+                        }
+                        if (westFree){
+                            for (int n = nwC[0]; n < seC[0]+1; n ++){
+                                Debug.Log("West Leveling: " + n +","+(nwC[1]-1) + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
+                                outputRep[n, (nwC[1]-1)]=0;
+                            }
+                        }
+                        if (eastFree){
+                            for (int n = nwC[0]; n < seC[0]+1; n ++){
+                                Debug.Log("East Leveling: " + n +","+(seC[1]+1) + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);                                
+                                outputRep[n, (seC[1]+1)]=0;
+                            }
+                        }
+                        if(northFree&&westFree){
+                            outputRep[(nwC[0]-1),(nwC[1]-1)]=0;
+                        }
+                        if(northFree&&eastFree){
+                            outputRep[(nwC[0]-1),(seC[1]+1)]=0;
+                        }
+                        if(southFree&&westFree){
+                            outputRep[(seC[0]+1),(nwC[1]-1)]=0;
+                        }
+                        if(southFree&&eastFree){
+                            outputRep[(seC[0]+1),(seC[1]+1)]=0;
+                        }
+
+                        //Skip the rest of this height that we've covered
+                        x = seC[0];
+                        y = seC[1];
+
+                    }
+                }
+            }
+
+        }
+
+        return new mapElitesTown(outputRep, buildingList);
+
+    }
+
+    
+    private mapElitesTown[,] buildingifyGrid(mapElitesTown[,] inputGrid){
+
+        mapElitesTown[,] outputGrid = new mapElitesTown[gridSize,gridSize];       
+        
+        for (int x = 0; x<inputGrid.GetLength(0); x++){
+            for (int y = 0; y<inputGrid.GetLength(1); y++){
+                if(inputGrid[x,y]!= null){
+                    outputGrid[x,y]=ConvertToBuildings(inputGrid[x,y].getRepresentation());
+                }
+            }
+        }
+
+        return outputGrid;
     }
 
 }

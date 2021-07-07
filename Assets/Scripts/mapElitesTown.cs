@@ -12,6 +12,7 @@ public class mapElitesTown
     private int totalHeight;
     private int maxHeight;
 
+    private ArrayList buildingList = new ArrayList();
 
     public mapElitesTown(int[,] townRep){
         townRepresentation =(int[,]) townRep.Clone();
@@ -19,6 +20,13 @@ public class mapElitesTown
         calculateMetrics(townRep);
     }
 
+    //Constructor for when we have a list of buildings, 
+    public mapElitesTown(int[,] townRep, ArrayList buildingList){
+        townRepresentation =(int[,]) townRep.Clone();
+        this.buildingList = buildingList;
+
+        calculateMetrics(townRep);
+    }
     //Calculate metrics for the town chunk, both fitness and behevioral features
     private void calculateMetrics(int[,] townRep){
         int localFitness = 0;
@@ -126,6 +134,10 @@ public class mapElitesTown
 
     public int getMaxHeight(){
         return maxHeight;
+    }
+
+    public ArrayList getBuildingList(){
+        return buildingList;
     }
 
 
