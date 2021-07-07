@@ -28,26 +28,30 @@ public class CityManager : MonoBehaviour
         //Test method, loop through the full contents of a map elites grid, generate each town in series with an offset between
         mapElitesTown[,] townGrid = mapElites.runMapElites();
 
-        int offset = 0;
+        int xoffset = 0;
+        int yoffset = 0;
 
         for (int x = 0; x<townGrid.GetLength(0); x++){
             for (int y = 0; y<townGrid.GetLength(1); y++){
                 
                 //Check map elites grid cell has a town in it
                 if (townGrid[x,y]!=null){
-                    Debug.Log("Generating final town chunk with stats:");
-                    Debug.Log("Fitness: " + townGrid[x,y].getFitness());
-                    Debug.Log("TotalHeight: " + townGrid[x,y].getTotalHeight());
-                    Debug.Log("Street Count: " + townGrid[x,y].getStreetCount());
+                    //Debug.Log("Generating final town chunk with stats:");
+                    //Debug.Log("Fitness: " + townGrid[x,y].getFitness());
+                    //Debug.Log("TotalHeight: " + townGrid[x,y].getTotalHeight());
+                    //Debug.Log("Street Count: " + townGrid[x,y].getStreetCount());
 
-                    blockSpawner.spawnBlocks2D(townGrid[x,y].getRepresentation(), offset);
-                    offset += 10;
+                    blockSpawner.spawnBlocks2D(townGrid[x,y].getRepresentation(), xoffset, yoffset);
                 }
                 else {
-                    Debug.Log("Final cell empty");
+                    //Debug.Log("Final cell empty");
                 }
+                xoffset += 11;
 
             }
+            //Generate the chunks 
+            yoffset+= 11;
+            xoffset = 0;
         }
 
     }

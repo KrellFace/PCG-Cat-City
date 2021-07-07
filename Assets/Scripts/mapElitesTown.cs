@@ -10,6 +10,7 @@ public class mapElitesTown
     private int fitness;
     private int streetCount;
     private int totalHeight;
+    private int maxHeight;
 
 
     public mapElitesTown(int[,] townRep){
@@ -24,9 +25,14 @@ public class mapElitesTown
         int localFitness = 0;
         int localStreetCount = 0;
         int localTotalHeight = 0;
+        int localMaxHeight = 0;
         for (int x = 0; x<townRep.GetLength(0); x++){
             for (int y = 0; y<townRep.GetLength(1); y++){
                 int cellValue = townRep[x,y];
+
+                if (cellValue > localMaxHeight){
+                    localMaxHeight = cellValue;
+                }
 
                 if (cellValue == 0){
                     localStreetCount +=1;
@@ -63,6 +69,7 @@ public class mapElitesTown
         this.fitness = localFitness;
         this.streetCount = localStreetCount;
         this.totalHeight = localTotalHeight;
+        this.maxHeight = localMaxHeight;
 
     }
 
@@ -84,6 +91,10 @@ public class mapElitesTown
 
     public int getTotalHeight(){
         return totalHeight;
+    }
+
+    public int getMaxHeight(){
+        return maxHeight;
     }
 
 

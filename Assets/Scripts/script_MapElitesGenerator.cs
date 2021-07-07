@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class script_MapElitesGenerator : MonoBehaviour
 {
+
+    private enum RUNTYPE{
+
+        //Total height (total number of blocks used) vs street count (cells with no buildings)
+        THvSC = 1,
+        //Total height vs max height
+        THvMH = 2
+        
+    }
     //Parameters
+
+    //This parameter is a hacky way of letting us experiment with different behavioral metrics within MAP Elites
+    //Determines how the 'checkBelongs()' method works
+    private RUNTYPE currRunType = RUNTYPE.THvSC;
 
     // How many generative steps we do before termination
     private int stepCount = 50000;
@@ -18,7 +31,7 @@ public class script_MapElitesGenerator : MonoBehaviour
     private int minStreeTiles = 20;
     private int maxStreetTiles = 80;
 
-    private int minTotalHeight = 100;
+    private int minTotalHeight = 50;
     private int maxTotalHeight = 400;
 
     //Maximum allowable building height
@@ -48,18 +61,23 @@ public class script_MapElitesGenerator : MonoBehaviour
         return mapElitesGrid;
     }
 
-    //Generate random starting town
+    //Generate random starting town in the form of a 2D int matrix
     private mapElitesTown generateRandomTown(){
 
         int[,] town = new int[townSize,townSize];
+
+        //Generate the street vs building chance of this chunk
+        int streetChance = Random.Range(1, 100);
+        //Generate the max building height for this chunk
+        int localMaxBuildHeight = Random.Range(1, maxBuildingHeight);
 
         //Random rnd = new Random();
 
         for (int x = 0; x<town.GetLength(0); x++){
             for (int z = 0; z<town.GetLength(1); z++){
-                //50% of being street, 50% chance of random height building
-                if (Random.Range(1, 100)>50){
-                    town[x,z] = Random.Range(1, maxBuildingHeight);
+                //Chance for each tile of being a street or a building
+                if (Random.Range(1, 100)>streetChance){
+                    town[x,z] = Random.Range(1, localMaxBuildHeight);
                 }
                 else{
                     town[x,z] = 0;
@@ -106,7 +124,7 @@ public class script_MapElitesGenerator : MonoBehaviour
 
         for (int x = 0; x<mapElitesGrid.GetLength(0); x++){
             for (int y = 0; y<mapElitesGrid.GetLength(1); y++){
-                if(checkBelongs(townToAdd, x, y)){
+                if(checkBelongs(townToAdd, x, y, currRunType)){
                     if (mapElitesGrid[x,y] == null || mapElitesGrid[x,y].getFitness() < townToAdd.getFitness()){
                         mapElitesGrid[x,y] = townToAdd;
                         Debug.Log("Town added to map elites grid at location: " + x + "," + y);
@@ -116,31 +134,56 @@ public class script_MapElitesGenerator : MonoBehaviour
         }        
     }
 
-    private bool checkBelongs(mapElitesTown townToCheck, int xLoc, int yLoc){
+    private bool checkBelongs(mapElitesTown townToCheck, int xLoc, int yLoc, RUNTYPE currRunType){
 
         int streetCountRange = maxStreetTiles - minStreeTiles;
         int totalHeightRange = maxTotalHeight - minTotalHeight;
+        float maxHeightRange = maxBuildingHeight;
 
-        int townSC = townToCheck.getStreetCount();
-        int townTH = townToCheck.getTotalHeight();
+        if (currRunType == RUNTYPE.THvSC){
+            int townSC = townToCheck.getStreetCount();
+            int townTH = townToCheck.getTotalHeight();
 
-        float localSCmin = ((streetCountRange/gridSize)*xLoc) + minStreeTiles;
-        float localSCmax = ((streetCountRange/gridSize)*(xLoc+1)) + minStreeTiles;
+            float localSCmin = ((streetCountRange/gridSize)*xLoc) + minStreeTiles;
+            float localSCmax = ((streetCountRange/gridSize)*(xLoc+1)) + minStreeTiles;
 
-        float localTHmin = ((totalHeightRange/gridSize)*yLoc) + minTotalHeight;
-        float localTHmax = ((totalHeightRange/gridSize)*(yLoc+1)) + minTotalHeight;
+            float localTHmin = ((totalHeightRange/gridSize)*yLoc) + minTotalHeight;
+            float localTHmax = ((totalHeightRange/gridSize)*(yLoc+1)) + minTotalHeight;
 
-        //Debug.Log("Local SC range: " + localSCmin + "," + localSCmax + " and town SC: " + townSC);
-        //Debug.Log("Local TH range: " + localTHmin + "," + localTHmax + " and town th: " + townTH);
-
-        if(townSC>localSCmin&&townSC < localSCmax && townTH > localTHmin && townTH < localTHmax){
             //Debug.Log("Local SC range: " + localSCmin + "," + localSCmax + " and town SC: " + townSC);
             //Debug.Log("Local TH range: " + localTHmin + "," + localTHmax + " and town th: " + townTH);
-            return true;
+
+            if(townSC>localSCmin&&townSC < localSCmax && townTH > localTHmin && townTH < localTHmax){
+                //Debug.Log("Local SC range: " + localSCmin + "," + localSCmax + " and town SC: " + townSC);
+                //Debug.Log("Local TH range: " + localTHmin + "," + localTHmax + " and town th: " + townTH);
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        else if (currRunType == RUNTYPE.THvMH){
+            float townMH = townToCheck.getMaxHeight();
+            int townTH = townToCheck.getTotalHeight();
+
+            float localMHmin = ((maxHeightRange/gridSize)*xLoc);
+            float localMHmax = ((maxHeightRange/gridSize)*(xLoc+1));
+
+            float localTHmin = ((totalHeightRange/gridSize)*yLoc) + minTotalHeight;
+            float localTHmax = ((totalHeightRange/gridSize)*(yLoc+1)) + minTotalHeight;
+
+            if(townMH>localMHmin&&townMH < localMHmax && townTH > localTHmin && townTH < localTHmax){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
         else{
             return false;
         }
+
+
     }
 
     private mapElitesTown getRandomLevelFromGrid(mapElitesTown[,] inputMap){
@@ -150,7 +193,7 @@ public class script_MapElitesGenerator : MonoBehaviour
         mapElitesTown returnLevel = null;
 
         int checkCount = 0;
-        int checkLimit = 100;
+        int checkLimit = 1000;
         //Added the check count so it doesnt loop forever and crash when i do something wrong 
         while (!selected&&checkCount < checkLimit){
             int randx = Random.Range(0, gridSize);

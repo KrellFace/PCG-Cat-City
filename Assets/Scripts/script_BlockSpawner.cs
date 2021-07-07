@@ -37,7 +37,7 @@ public class script_BlockSpawner : MonoBehaviour
     }
 
     //Takes in a 2D int matrix where each int represents 
-    public void spawnBlocks2D(int[,] inputMatrix, int xOffset){
+    public void spawnBlocks2D(int[,] inputMatrix, int xOffset, int zOffset){
 
         Vector3 defaultSpawnPosition = this.transform.position;
 
@@ -52,7 +52,7 @@ public class script_BlockSpawner : MonoBehaviour
                     for (int y = 0; y<inputMatrix[x,z]; y++){
 
                         //Get spawn position
-                        Vector3 spawnPos = new Vector3(defaultSpawnPosition.x+x+xOffset, defaultSpawnPosition.y+y, defaultSpawnPosition.z+z);
+                        Vector3 spawnPos = new Vector3(defaultSpawnPosition.x+x+xOffset, defaultSpawnPosition.y+y, defaultSpawnPosition.z+z+zOffset);
 
                         Instantiate(basicBlock, spawnPos, this.transform.rotation, this.transform);
                     }
