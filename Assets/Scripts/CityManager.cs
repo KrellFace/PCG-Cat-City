@@ -35,6 +35,7 @@ public class CityManager : MonoBehaviour
                 if (townGrid[x,y]!=null){
 
                     blockSpawner.spawnBlocks2D(townGrid[x,y].getRepresentation(), xoffset, zoffset);
+                    townGrid[x,y].updateBuildingOffset(new int[]{xoffset, zoffset});
                     allBuildings.AddRange(townGrid[x,y].getBuildingList());
                 }
                 else {
@@ -48,7 +49,7 @@ public class CityManager : MonoBehaviour
             xoffset = 0;
         }
 
-        
+
 
 
         //Testing stuff to ignore

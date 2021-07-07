@@ -20,7 +20,7 @@ public class script_MapElitesGenerator : MonoBehaviour
     private RUNTYPE currRunType = RUNTYPE.THvSC;
 
     // How many generative steps we do before termination
-    private int stepCount = 80000;
+    private int stepCount = 50000;
     //Size of Map elites grid. Always a square n by n grid
     private int gridSize = 20;
 
@@ -50,9 +50,8 @@ public class script_MapElitesGenerator : MonoBehaviour
         
         for (int i = 0; i <stepCount; i++){
             
-            if (stepCount%10 == 0){
+            if (i % 100 == 0){
                 Debug.Log("Step count: " + i + ". Current populated cells: " + getPopulatedCellCount(mapElitesGrid) + " Current Total Fitness: " + getTotalGridFitness(mapElitesGrid));
-
             }
 
             mapElitesTown currTown1 = getRandomLevelFromGrid(mapElitesGrid);
@@ -375,30 +374,30 @@ public class script_MapElitesGenerator : MonoBehaviour
                         bool southFree = (seC[0]<outputRep.GetLength(0)-1);
                         bool westFree = ((nwC[1])>0);
                         bool eastFree = (seC[1]<outputRep.GetLength(1)-1);
-                        Debug.Log("Building found. Height: " + i +". NW Corner: " + nwC[0]+","+nwC[1] + ". SE Corner: " + seC[0]+","+seC[1]+
-                            "NorthFree: " + northFree + ". SouthFree: " + southFree +"Westfree: "+ westFree + ". Eastfree: " + eastFree);
+                        //Debug.Log("Building found. Height: " + i +". NW Corner: " + nwC[0]+","+nwC[1] + ". SE Corner: " + seC[0]+","+seC[1]+
+                        //    "NorthFree: " + northFree + ". SouthFree: " + southFree +"Westfree: "+ westFree + ". Eastfree: " + eastFree);
                         //Loop through surrounding tiles
                         if (northFree){
                             for (int n = nwC[1]; n < seC[1]+1; n ++){
-                                Debug.Log("North Leveling: " + (nwC[0]-1) +","+n + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
+                                //Debug.Log("North Leveling: " + (nwC[0]-1) +","+n + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
                                 outputRep[(nwC[0]-1),n]=0;
                             }
                         }
                         if (southFree){
                             for (int n = nwC[1]; n < seC[1]+1; n ++){
-                                Debug.Log("South Leveling: " + (seC[0]+1) +","+n + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
+                                //Debug.Log("South Leveling: " + (seC[0]+1) +","+n + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
                                 outputRep[(seC[0]+1), n]=0;
                             }
                         }
                         if (westFree){
                             for (int n = nwC[0]; n < seC[0]+1; n ++){
-                                Debug.Log("West Leveling: " + n +","+(nwC[1]-1) + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
+                                //Debug.Log("West Leveling: " + n +","+(nwC[1]-1) + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);
                                 outputRep[n, (nwC[1]-1)]=0;
                             }
                         }
                         if (eastFree){
                             for (int n = nwC[0]; n < seC[0]+1; n ++){
-                                Debug.Log("East Leveling: " + n +","+(seC[1]+1) + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);                                
+                                //Debug.Log("East Leveling: " + n +","+(seC[1]+1) + "for height" + i + "& building " + nwC[0]+","+nwC[1] + ". " + seC[0]+","+seC[1]);                                
                                 outputRep[n, (seC[1]+1)]=0;
                             }
                         }

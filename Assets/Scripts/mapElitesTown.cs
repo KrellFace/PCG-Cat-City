@@ -136,6 +136,13 @@ public class mapElitesTown
         return maxHeight;
     }
 
+    //Update the xy offsets of every building stored with this chunk
+    public void updateBuildingOffset(int[] offset){
+        foreach(building building in buildingList){
+            building.setxyOffset(offset);
+        }
+    }
+
     public ArrayList getBuildingList(){
         return buildingList;
     }
