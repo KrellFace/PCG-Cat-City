@@ -19,8 +19,7 @@ public class mapElitesTown
         calculateMetrics(townRep);
     }
 
-    //Fitness is based on cells which are next to other cells with the same value
-    //Should push the search towards buildings with flat tops, and contiguous streets
+    //Calculate metrics for the town chunk, both fitness and behevioral features
     private void calculateMetrics(int[,] townRep){
         int localFitness = 0;
         int localStreetCount = 0;
@@ -43,26 +42,58 @@ public class mapElitesTown
 
                 //Check each of the four adjacent cells (if they arent outside our grid)
                 //If they are the same, increase fitness
-                if ((x-1)>=0){
+                //For each matching cell, it increases the local fitness by 2, this hopefully will extra priviledge clusters
+                //i.e two pairs of matching size blocks in different parts of the level is much less good than 4 together
+                int tileFitness = 1;
+
+                //Check if there is space in different directions (and that were not at the edge)
+                bool northFree = ((y+1)<townRep.GetLength(1));
+                bool southFree = ((y-1)>=0);
+                bool westFree = ((x-1)>=0);
+                bool eastFree = ((x+1)<townRep.GetLength(0));
+
+                if (westFree){
                     if (townRep[x-1,y]==cellValue){
-                        localFitness+=1;
+                        tileFitness*=2;
                     }
                 }
-                if ((x+1)<townRep.GetLength(0)){
+                if (eastFree){
                     if (townRep[x+1,y]==cellValue){
-                        localFitness+=1;
+                        tileFitness*=2;
                     }
                 }
-                if ((y-1)>=0){
+                if (southFree){
                     if (townRep[x,y-1]==cellValue){
-                        localFitness+=1;
+                        tileFitness*=2;
                     }
                 }
-                if ((y+1)<townRep.GetLength(1)){
+                if (northFree){
                     if (townRep[x,y+1]==cellValue){
-                        localFitness+=1;
+                        tileFitness*=2;
                     }
-                }                                                
+                }
+                if (northFree&&westFree){
+                    if (townRep[x-1,y+1]==cellValue){
+                        tileFitness*=2;
+                    }                    
+                }
+                if (northFree&&eastFree){
+                    if (townRep[x+1,y+1]==cellValue){
+                        tileFitness*=2;
+                    }     
+                }
+                if (southFree&&westFree){
+                    if (townRep[x-1,y-1]==cellValue){
+                        tileFitness*=2;
+                    }                    
+                }
+                if (southFree&&eastFree){
+                    if (townRep[x+1,y-1]==cellValue){
+                        tileFitness*=2;
+                    }                    
+                }                
+
+                localFitness+=tileFitness;                                                
             }
         }
 

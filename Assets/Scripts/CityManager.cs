@@ -29,7 +29,7 @@ public class CityManager : MonoBehaviour
         mapElitesTown[,] townGrid = mapElites.runMapElites();
 
         int xoffset = 0;
-        int yoffset = 0;
+        int zoffset = 0;
 
         for (int x = 0; x<townGrid.GetLength(0); x++){
             for (int y = 0; y<townGrid.GetLength(1); y++){
@@ -41,7 +41,7 @@ public class CityManager : MonoBehaviour
                     //Debug.Log("TotalHeight: " + townGrid[x,y].getTotalHeight());
                     //Debug.Log("Street Count: " + townGrid[x,y].getStreetCount());
 
-                    blockSpawner.spawnBlocks2D(townGrid[x,y].getRepresentation(), xoffset, yoffset);
+                    blockSpawner.spawnBlocks2D(townGrid[x,y].getRepresentation(), xoffset, zoffset);
                 }
                 else {
                     //Debug.Log("Final cell empty");
@@ -50,7 +50,7 @@ public class CityManager : MonoBehaviour
 
             }
             //Generate the chunks 
-            yoffset+= 11;
+            zoffset+= 11;
             xoffset = 0;
         }
 

@@ -20,23 +20,25 @@ public class script_MapElitesGenerator : MonoBehaviour
     private RUNTYPE currRunType = RUNTYPE.THvSC;
 
     // How many generative steps we do before termination
-    private int stepCount = 50000;
+    private int stepCount = 10000;
     //Size of Map elites grid. Always a square n by n grid
-    private int gridSize = 10;
+    private int gridSize = 20;
 
     //Size of generated towns. Always a square n by n grid
     private int townSize = 10;
 
     //Behavioral Metric Parameters
-    private int minStreeTiles = 20;
-    private int maxStreetTiles = 80;
+    private int minStreeTiles = 0;
+    private int maxStreetTiles = 100;
 
-    private int minTotalHeight = 50;
+    private int minTotalHeight = 0;
     private int maxTotalHeight = 400;
 
     //Maximum allowable building height
-    private int maxBuildingHeight = 8;
+    private int maxBuildingHeight = 10;
     private float tileMutateChance = 0.5f;
+
+    private float crossoverChance = 0.2f;
 
 
     //Main method for generating the output town
@@ -47,14 +49,28 @@ public class script_MapElitesGenerator : MonoBehaviour
         //MAP Elites core loop#
         
         for (int i = 0; i <stepCount; i++){
+            
+            if (stepCount%10 == 0){
+                Debug.Log("Step count: " + i + ". Current populated cells: " + getPopulatedCellCount(mapElitesGrid) + " Current Total Fitness: " + getTotalGridFitness(mapElitesGrid));
 
-            Debug.Log("Step count: " + i + ". Current populated cells: " + getPopulatedCellCount(mapElitesGrid));
+            }
 
-            mapElitesTown currTown = getRandomLevelFromGrid(mapElitesGrid);
+            mapElitesTown currTown1 = getRandomLevelFromGrid(mapElitesGrid);
+            mapElitesTown currTown2 = getRandomLevelFromGrid(mapElitesGrid);
             //Mutate it
-            mapElitesTown newTown = tileMutate(currTown);
-            //Add it back to the grid
-            addToGrid(mapElitesGrid, newTown);
+            mapElitesTown newTown1 = tileMutate(currTown1);
+            mapElitesTown newTown2 = tileMutate(currTown2);
+
+            //Crossover chance
+            if (Random.Range(0f, 1f)<crossoverChance){
+                mapElitesTown[] output = crossover(newTown1, newTown2);
+                newTown1 = output[0];
+                newTown2 = output[1];
+            }
+
+            //Add them back to the grid
+            addToGrid(mapElitesGrid, newTown1);
+            addToGrid(mapElitesGrid, newTown2);
 
 
         }
@@ -108,6 +124,7 @@ public class script_MapElitesGenerator : MonoBehaviour
         return mapElitesGrid;
     }
 
+    //Generate array of randomised town chunks
     private mapElitesTown[] generateRandomPopulation(int popSize){
 
         mapElitesTown[] returnPop = new mapElitesTown[popSize];
@@ -120,6 +137,7 @@ public class script_MapElitesGenerator : MonoBehaviour
 
     }
 
+    //Add a level to a map elites grid
     private void addToGrid(mapElitesTown[,] mapElitesGrid, mapElitesTown townToAdd){
 
         for (int x = 0; x<mapElitesGrid.GetLength(0); x++){
@@ -134,6 +152,7 @@ public class script_MapElitesGenerator : MonoBehaviour
         }        
     }
 
+    //Method for checking whether a given level belongs in a given cell of a map elites grid, dependent on the run type (which behavioral features were looking at)
     private bool checkBelongs(mapElitesTown townToCheck, int xLoc, int yLoc, RUNTYPE currRunType){
 
         int streetCountRange = maxStreetTiles - minStreeTiles;
@@ -186,6 +205,7 @@ public class script_MapElitesGenerator : MonoBehaviour
 
     }
 
+    //Grab us a random level from a map elites grid
     private mapElitesTown getRandomLevelFromGrid(mapElitesTown[,] inputMap){
 
         bool selected =false ;
@@ -244,6 +264,35 @@ public class script_MapElitesGenerator : MonoBehaviour
         return new mapElitesTown(townRep);
     }
 
+    private mapElitesTown[] crossover(mapElitesTown chunk1, mapElitesTown chunk2){
+        int[,] chunkRep1 = (int[,]) chunk1.getRepresentation().Clone();
+        int[,] chunkRep2 = (int[,]) chunk2.getRepresentation().Clone();
+
+        //Bool for whether we are crossing over north - south or west - east
+        bool northSouthSplit = (Random.Range(1,100)>50);
+        //Pick random split point
+        int splitPoint = Random.Range(0, gridSize);
+
+        for (int x = 0; x<townSize; x++){
+            for (int y = 0; y<townSize; y++){
+                int chunk1Val = chunkRep1[x,y];
+                int chunk2Val = chunkRep2[x,y];
+
+                //Swap the blocks if we're past the crossover point
+                if ((northSouthSplit&&x>splitPoint)||(!northSouthSplit&&y>splitPoint)){
+                    chunkRep1[x,y] = chunk2Val;
+                    chunkRep2[x,y] = chunk1Val;
+                }
+
+            }
+        }
+        mapElitesTown newTown1 = new mapElitesTown(chunkRep1);
+        mapElitesTown newTown2 = new mapElitesTown(chunkRep2);
+
+        return new mapElitesTown[]{newTown1,newTown2};
+
+    }
+
     private int getPopulatedCellCount(mapElitesTown[,] inputGrid){
         int count = 0;
 
@@ -256,6 +305,20 @@ public class script_MapElitesGenerator : MonoBehaviour
         }
 
         return count;
+    }
+
+    private int getTotalGridFitness(mapElitesTown[,] inputGrid){
+        int total = 0;
+
+        for (int x = 0; x<inputGrid.GetLength(0); x++){
+            for (int y = 0; y<inputGrid.GetLength(1); y++){
+                if(inputGrid[x,y]!= null){
+                    total+=inputGrid[x,y].getFitness();
+                }
+            }
+        }
+
+        return total;
     }
 
 }
