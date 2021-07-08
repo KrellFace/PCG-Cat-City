@@ -16,12 +16,29 @@ public class building
     }
 
     public void printInfo(){
-        Debug.Log("Buidling NWC: " + northWestCorner[0] + "," + northWestCorner[1] + ". Buidling SEC: " + southEastCorner[0] + "," + southEastCorner[1] +
+        Debug.Log("Buidling Corners: " + getAbsNWCorner()[0] + "," + getAbsNWCorner()[1] + "." +  getAbsNECorner()[0] + "," + getAbsNECorner()[1] + "." +
+            getAbsSWCorner()[0] + "," + getAbsSWCorner()[1] + "." + getAbsSECorner()[0] + "," + getAbsSECorner()[1] + "." +
             " Building height: " + height);
     }
 
     public int getHeight(){
         return height;
+    }
+
+    //These methods to get the global corner positions of the building
+    public int[] getAbsNWCorner(){
+        return  new int[]{northWestCorner[0]+xyOffset[0], northWestCorner[1]+xyOffset[1]};
+    }
+    public int[] getAbsNECorner(){
+        return  new int[]{northWestCorner[0]+xyOffset[0], southEastCorner[1]+xyOffset[1]};
+    }
+
+    public int[] getAbsSWCorner(){
+        return  new int[]{southEastCorner[0]+xyOffset[0], northWestCorner[1]+xyOffset[1]};
+    }
+
+    public int[] getAbsSECorner(){
+        return  new int[]{southEastCorner[0]+xyOffset[0], southEastCorner[1]+xyOffset[1]};
     }
 
     public int[] getNWCorner(){
@@ -34,6 +51,8 @@ public class building
 
     public void setxyOffset(int[] offset){
         xyOffset = offset;
+
+        //printInfo();
     }
 
     public int[] getxyOffset(){

@@ -50,8 +50,6 @@ public class CityManager : MonoBehaviour
         }
         */
 
-
-
     }
 
     private ArrayList spawnBlocksGridForm(mapElitesTown[,] meGrid, bool spawnBlocks){
@@ -100,7 +98,7 @@ public class CityManager : MonoBehaviour
         int stepCount = 0;
         
         //Amount we separate each chunk spawn by
-        int offsetAmount = 11;
+        int offsetAmount = 12;
 
         for (int x = meGrid.GetLength(0)-1; x>0; x--){
             for (int y = meGrid.GetLength(1)-1; y>0; y--){
