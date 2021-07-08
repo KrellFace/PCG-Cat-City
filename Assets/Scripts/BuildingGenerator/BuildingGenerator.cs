@@ -42,14 +42,15 @@ public class BuildingGenerator : MonoBehaviour
     
     public void Generate(int xOffset, int zOffset) // xOffset and zOffset provided by CityManager per building site
     {
-        /*WFC WFC = new WFC();
+        WFC WFC = new WFC();
         WFC.Initialize(5,1,1);
         WFC.RunWFC();
-        Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();*/
+        Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
 
         Vector3 defaultSpawnPosition = this.transform.position;
-        foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
-        //foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
+        
+        //foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
+        foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
         {
             if ( (entry.Value!="G") && (entry.Value!="N") && (entry.Value!="X") && (entry.Value!="T") ) {
                 //Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
@@ -71,6 +72,9 @@ public class BuildingGenerator : MonoBehaviour
 
     void TestInitializeStructure()
     {
+        structureDict.Add( (1,1,1), "A2" );
+        structureDict.Add( (1,1,2), "C1" );
+
         /*
         structureDict.Add( (1,1,1), "A2" );
         structureDict.Add( (1,1,2), "C1" );
@@ -81,7 +85,8 @@ public class BuildingGenerator : MonoBehaviour
         structureDict.Add( (2,2,1), "A1" );
         structureDict.Add( (2,2,2), "C1" );
         */
-
+        
+        /*
         structureDict.Add( (1,1,1), "A1" );
         structureDict.Add( (1,1,2), "B1" );
         structureDict.Add( (1,1,3), "C1" );
@@ -115,6 +120,7 @@ public class BuildingGenerator : MonoBehaviour
         structureDict.Add( (4,1,2), "B4" );
         structureDict.Add( (4,1,3), "B4" );
         structureDict.Add( (4,1,4), "C3" );
+        */
     }
     
     void InitializeDictionary()

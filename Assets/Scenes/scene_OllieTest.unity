@@ -206,7 +206,7 @@ MonoBehaviour:
   piece_C1: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
   piece_C2: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
   piece_C3: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
-  yOffset: 2
+  yOffset: 0.165
   grid_spacing: 2
 --- !u!1 &221656927
 GameObject:

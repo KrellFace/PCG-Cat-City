@@ -32,7 +32,7 @@ public class CityManager : MonoBehaviour
         mapElitesTown[,] townGrid = mapElites.runMapElites();
 
         //Spawn blocks in MAP Elites style grid formation
-        spawnBlocksGridForm(townGrid, true);
+        //spawnBlocksGridForm(townGrid, true);
 
         //Spawn them in a spiral
         //spawnBlocksSpiralForm(townGrid, true);
@@ -46,6 +46,7 @@ public class CityManager : MonoBehaviour
         buildingGenerator = gameObject.GetComponent<BuildingGenerator>();
         buildingGenerator.Init();
 
+        
         int test_iter=0;
         foreach  (building b in buildingList){
 
@@ -53,15 +54,21 @@ public class CityManager : MonoBehaviour
             int[] originCorner = b.getAbsNWCorner();
             Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
 
-            buildingGenerator.Generate(originCorner[0]*5, originCorner[1]*5);
+            buildingGenerator.Generate(originCorner[0]*1, originCorner[1]*1);
 
             Debug.Log("foreach success");
 
-            if (test_iter==1) {
+            if (test_iter>100) { // trying to bound run time
                 break;
             }
             test_iter ++;
         }
+
+        // Using the below samples to tune inter-building spacing scale
+        //buildingGenerator.Generate(0, 0);
+        //buildingGenerator.Generate(1, 0);
+
+
 
         mainCamera.SetActive(false);
         canvas.enabled = false;

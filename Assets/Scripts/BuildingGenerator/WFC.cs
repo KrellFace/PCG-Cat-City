@@ -383,7 +383,7 @@ public class WFC
         dictionary.Add( "C2", C2 );
         dictionary.Add( "C3", C3 );
 
-        G.Allowed["zp"] = new List<string>() {"A1", "A2", "N"};
+        G.Allowed["zp"] = new List<string>() {"A1", "A2"};
         G.Allowed["xp"] = G.Allowed["xn"] = G.Allowed["yp"] = G.Allowed["yn"] = new List<string>() {"G"};
 
         N.Allowed["zp"] = new List<string>() {"N"};
