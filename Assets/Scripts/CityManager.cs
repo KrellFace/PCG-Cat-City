@@ -35,22 +35,16 @@ public class CityManager : MonoBehaviour
         
         ArrayList buildingList = spawnBlocksSpiralForm(townGrid, false);
 
+        buildingGenerator = gameObject.GetComponent<BuildingGenerator>();
+
         foreach  (building b in buildingList){
 
-            //Array size two of form [x,z] cordinate
-            int[] northWestCorner = b.getNWCorner();
-            //Array size two of form [x,z] cordinate
-            int[] southEastCorner = b.getSECorner();
-            //Array size two of form [x,z] specifying offset of this building from the parent
-            //This means, true corner location will end up being northWestCorner + offset
-            int[] offset = b.getxyOffset();
-
             int height = b.getHeight();
+            int[] originCorner = b.getAbsNWCorner();
+            Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
 
-            Debug.Log("GenerateCity(): "+northWestCorner+"/"+southEastCorner+"/"+offset+"/"+height);
-
-            buildingGenerator = gameObject.GetComponent<BuildingGenerator>();
-            buildingGenerator.Generate();
+            buildingGenerator.Init();
+            buildingGenerator.Generate(originCorner[0], originCorner[1]);
 
             //Instantiate your object here
             //Instantiate new WFCBuilding();
