@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BuildingGenerator : MonoBehaviour
 {
+    public NavMeshSurface surface;
+
     public GameObject basicColumn;
     public GameObject basicBlock;
     
@@ -26,7 +29,7 @@ public class BuildingGenerator : MonoBehaviour
     Dictionary<string, GameObject> pieceDict = new Dictionary<string, GameObject>();
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
         TestInitializeStructure();
 
@@ -50,6 +53,10 @@ public class BuildingGenerator : MonoBehaviour
                                            defaultSpawnPosition.z + piece_Z*grid_spacing);
             Instantiate(pieceDict[entry.Value], spawnPos, this.transform.rotation, this.transform);
         }
+
+        surface.BuildNavMesh();
+
+        yield return null;
     }
 
     void TestInitializeStructure()
