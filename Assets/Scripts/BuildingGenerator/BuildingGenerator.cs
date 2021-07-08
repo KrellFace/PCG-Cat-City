@@ -30,9 +30,17 @@ public class BuildingGenerator : MonoBehaviour
     Dictionary<string, GameObject> pieceDict = new Dictionary<string, GameObject>();
 
     // Start is called before the first frame update
+    /*
     IEnumerator Start()
     {
-        //TestInitializeStructure();
+        Generate();
+
+        yield return null;
+    }*/
+
+    public void Generate()
+    {
+        TestInitializeStructure();
         InitializeDictionary();
 
         WFC WFC = new WFC();
@@ -42,7 +50,8 @@ public class BuildingGenerator : MonoBehaviour
         Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
 
         Vector3 defaultSpawnPosition = this.transform.position;
-        foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
+        foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
+        //foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
         {
             if ( (entry.Value!="G") && (entry.Value!="N") && (entry.Value!="X") && (entry.Value!="T") ) {
                 Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
@@ -60,8 +69,6 @@ public class BuildingGenerator : MonoBehaviour
         }
 
         surface.BuildNavMesh();
-
-        yield return null;
     }
 
     void TestInitializeStructure()

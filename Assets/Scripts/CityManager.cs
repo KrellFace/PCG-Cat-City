@@ -8,6 +8,8 @@ public class CityManager : MonoBehaviour
 
     public script_MapElitesGenerator mapElites;
 
+    private BuildingGenerator buildingGenerator;
+
     private enum Direction{
         north,
         south,
@@ -22,15 +24,15 @@ public class CityManager : MonoBehaviour
         mapElitesTown[,] townGrid = mapElites.runMapElites();
 
         //Spawn blocks in MAP Elites style grid formation
-        //spawnBlocksGridForm(townGrid, true);
+        spawnBlocksGridForm(townGrid, true);
 
         //Spawn them in a spiral
-        spawnBlocksSpiralForm(townGrid, true);
+        //spawnBlocksSpiralForm(townGrid, true);
 
         //Thomas, your chunk should hopefully be able to plug in here
         //This method generates all of the buildings in the right formation, but passing in false stops it generating my ugly blocks, leaving the space clear for WFC cleverness
         //Comment out the above spawnBlocksSpiralForm() method when you're ready to hook into this
-        /*
+        
         ArrayList buildingList = spawnBlocksSpiralForm(townGrid, false);
 
         foreach  (building b in buildingList){
@@ -45,10 +47,15 @@ public class CityManager : MonoBehaviour
 
             int height = b.getHeight();
 
+            Debug.Log("GenerateCity(): "+northWestCorner+"/"+southEastCorner+"/"+offset+"/"+height);
+
+            buildingGenerator = gameObject.GetComponent<BuildingGenerator>();
+            buildingGenerator.Generate();
+
             //Instantiate your object here
-            Instantiate new WFCBuilding();
+            //Instantiate new WFCBuilding();
         }
-        */
+        
 
     }
 
