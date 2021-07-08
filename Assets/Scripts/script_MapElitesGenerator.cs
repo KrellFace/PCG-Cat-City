@@ -17,7 +17,7 @@ public class script_MapElitesGenerator : MonoBehaviour
 
     //This parameter is a hacky way of letting us experiment with different behavioral metrics within MAP Elites
     //Determines how the 'checkBelongs()' method works
-    private RUNTYPE currRunType = RUNTYPE.THvSC;
+    private RUNTYPE currRunType = RUNTYPE.THvMH;
 
     // How many generative steps we do before termination
     private int stepCount = 50000;
@@ -32,11 +32,12 @@ public class script_MapElitesGenerator : MonoBehaviour
     private int maxStreetTiles = 100;
 
     private int minTotalHeight = 0;
-    private int maxTotalHeight = 400;
+    private int maxTotalHeight = 1000;
 
     //Maximum allowable building height
-    private int maxBuildingHeight = 10;
+    private int maxBuildingHeight = 15;
     private float tileMutateChance = 0.5f;
+    private float tileDuplicateChance = 0.2f;
 
     private float crossoverChance = 0.2f;
 
@@ -59,6 +60,9 @@ public class script_MapElitesGenerator : MonoBehaviour
             //Mutate it
             mapElitesTown newTown1 = tileMutate(currTown1);
             mapElitesTown newTown2 = tileMutate(currTown2);
+            //Tile duplicate mutate it
+            newTown1 = tileDuplicate(newTown1);
+            newTown2 = tileDuplicate(newTown2);
 
             //Crossover chance
             if (Random.Range(0f, 1f)<crossoverChance){
@@ -262,6 +266,43 @@ public class script_MapElitesGenerator : MonoBehaviour
                             townRep[x,y] +=1;
                         }
                      }
+                }
+            }
+        }
+        return new mapElitesTown(townRep);
+    }
+
+    //Mutation method, chance of duplicating the value of a neighbour cell into current cell, to promote building generation
+    private mapElitesTown tileDuplicate(mapElitesTown input){
+        int[,] townRep = (int[,]) input.getRepresentation().Clone();
+
+        for (int x = 0; x<townRep.GetLength(0); x++){
+            for (int y = 0; y<townRep.GetLength(1); y++){
+
+                if (Random.Range(0, 1) < tileDuplicateChance){
+                    
+                    //Decided which direction we copy from
+                    float directionSelector = Random.Range(0,100);
+
+                    //Check directions are free
+                    bool northFree = ((y+1)<townRep.GetLength(1));
+                    bool southFree = ((y-1)>=0);
+                    bool westFree = ((x-1)>=0);
+                    bool eastFree = ((x+1)<townRep.GetLength(0));
+
+                     if ((directionSelector<25)&&northFree){;
+                        townRep[x,y] = townRep[x,y+1];
+                     }
+                     else if((directionSelector<50)&&southFree){
+                        townRep[x,y] = townRep[x,y-1];
+                     }
+                     else if ((directionSelector<75)&&westFree){
+                        townRep[x,y] = townRep[x-1,y];
+                     }
+                     else if (eastFree){
+                         townRep[x,y]=townRep[x+1,y];
+                     }
+
                 }
             }
         }
