@@ -17,35 +17,51 @@ public class script_MapElitesGenerator : MonoBehaviour
 
     //This parameter is a hacky way of letting us experiment with different behavioral metrics within MAP Elites
     //Determines how the 'checkBelongs()' method works
-    private RUNTYPE currRunType = RUNTYPE.THvMH;
+    private RUNTYPE currRunType = RUNTYPE.THvSC;
 
     // How many generative steps we do before termination
     private int stepCount = 50000;
     //Size of Map elites grid. Always a square n by n grid
-    private int gridSize = 20;
+    private int gridSize = 5;
 
     //Size of generated towns. Always a square n by n grid
     private int townSize = 10;
 
-    //Behavioral Metric Parameters
-    private int minStreeTiles = 0;
-    private int maxStreetTiles = 100;
-
-    private int minTotalHeight = 0;
-    private int maxTotalHeight = 1000;
 
     //Maximum allowable building height
-    private int maxBuildingHeight = 15;
+    private int maxBuildingHeight = 3;
+
+    //Behavioral Metric Parameters
+    private int minStreeTiles = 0;
+    private int maxStreetTiles;
+
+    private int minTotalHeight = 0;
+    private int maxTotalHeight;
+
+
     private float tileMutateChance = 0.5f;
     private float tileDuplicateChance = 0.2f;
 
     private float crossoverChance = 0.2f;
 
 
+
     //Main method for generating the output town
     public mapElitesTown[,] runMapElites(){
 
+
+        //Set behavioral characteristics to reasonable values for the town size
+        this.maxStreetTiles = (int)(townSize*townSize);
+        this.maxTotalHeight = (int) (townSize*townSize)*maxBuildingHeight;
+
+
+
         mapElitesTown[,] mapElitesGrid = generateStartingGrid();
+
+        if(currRunType == RUNTYPE.THvSC){
+            Debug.Log("Run BCs: MinTH: " + minTotalHeight + " Max: " + maxTotalHeight + ". MinSC: " + minStreeTiles + " Max: " + maxStreetTiles);
+        }
+        
 
         //MAP Elites core loop#
         
@@ -163,13 +179,13 @@ public class script_MapElitesGenerator : MonoBehaviour
     //Method for checking whether a given level belongs in a given cell of a map elites grid, dependent on the run type (which behavioral features were looking at)
     private bool checkBelongs(mapElitesTown townToCheck, int xLoc, int yLoc, RUNTYPE currRunType){
 
-        int streetCountRange = maxStreetTiles - minStreeTiles;
-        int totalHeightRange = maxTotalHeight - minTotalHeight;
+        float streetCountRange = maxStreetTiles - minStreeTiles;
+        float totalHeightRange = maxTotalHeight - minTotalHeight;
         float maxHeightRange = maxBuildingHeight;
 
         if (currRunType == RUNTYPE.THvSC){
-            int townSC = townToCheck.getStreetCount();
-            int townTH = townToCheck.getTotalHeight();
+            float townSC = townToCheck.getStreetCount();
+            float townTH = townToCheck.getTotalHeight();
 
             float localSCmin = ((streetCountRange/gridSize)*xLoc) + minStreeTiles;
             float localSCmax = ((streetCountRange/gridSize)*(xLoc+1)) + minStreeTiles;
@@ -191,7 +207,7 @@ public class script_MapElitesGenerator : MonoBehaviour
         }
         else if (currRunType == RUNTYPE.THvMH){
             float townMH = townToCheck.getMaxHeight();
-            int townTH = townToCheck.getTotalHeight();
+            float townTH = townToCheck.getTotalHeight();
 
             float localMHmin = ((maxHeightRange/gridSize)*xLoc);
             float localMHmax = ((maxHeightRange/gridSize)*(xLoc+1));
@@ -209,8 +225,6 @@ public class script_MapElitesGenerator : MonoBehaviour
         else{
             return false;
         }
-
-
     }
 
     //Grab us a random level from a map elites grid
@@ -221,7 +235,7 @@ public class script_MapElitesGenerator : MonoBehaviour
         mapElitesTown returnLevel = null;
 
         int checkCount = 0;
-        int checkLimit = 1000;
+        int checkLimit = 10000;
         //Added the check count so it doesnt loop forever and crash when i do something wrong 
         while (!selected&&checkCount < checkLimit){
             int randx = Random.Range(0, gridSize);
