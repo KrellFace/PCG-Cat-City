@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BuildingGenerator : MonoBehaviour
 {
     public WFC scriptWFC;
+    public NavMeshSurface surface;
 
     public GameObject basicColumn;
     public GameObject basicBlock;
@@ -28,34 +30,38 @@ public class BuildingGenerator : MonoBehaviour
     Dictionary<string, GameObject> pieceDict = new Dictionary<string, GameObject>();
 
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        TestInitializeStructure();
-
-        Vector3 defaultSpawnPosition = this.transform.position;
-        //Vector3 spawnPosColumn = new Vector3(defaultSpawnPosition.x + xOffset, defaultSpawnPosition.y + yOffset, defaultSpawnPosition.z + zOffset);
-        //Vector3 spawnPosBlock = new Vector3(defaultSpawnPosition.x + xOffset, defaultSpawnPosition.y + yOffset*3, defaultSpawnPosition.z + zOffset);
-        //Instantiate(basicColumn, spawnPosColumn, this.transform.rotation, this.transform);
-        //Instantiate(basicBlock, spawnPosBlock, this.transform.rotation, this.transform);
-
-        foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
-        {
-            //Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
-
-            int piece_X = entry.Key.Item1;
-            int piece_Y = entry.Key.Item3 - 1;
-            int piece_Z = entry.Key.Item2;
-
-            Vector3 spawnPos = new Vector3(defaultSpawnPosition.x + piece_X*grid_spacing, 
-                                           defaultSpawnPosition.y + piece_Y*grid_spacing + yOffset,
-                                           defaultSpawnPosition.z + piece_Z*grid_spacing);
-            Instantiate(pieceDict[entry.Value], spawnPos, this.transform.rotation, this.transform);
-        }
+        //TestInitializeStructure();
+        InitializeDictionary();
 
         WFC WFC = new WFC();
-        WFC.Initialize(3,1,1);
+        WFC.Initialize(5,1,1);
         WFC.RunWFC();
         WFC.PrintVisitableSpace();
+        Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
+
+        Vector3 defaultSpawnPosition = this.transform.position;
+        foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
+        {
+            if ( (entry.Value!="G") && (entry.Value!="N") && (entry.Value!="X") && (entry.Value!="T") ) {
+                Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
+
+                int piece_X = entry.Key.Item1;
+                int piece_Y = entry.Key.Item3 - 1;
+                int piece_Z = entry.Key.Item2;
+
+                Vector3 spawnPos = new Vector3(defaultSpawnPosition.x + piece_X*grid_spacing, 
+                                            defaultSpawnPosition.y + piece_Y*grid_spacing + yOffset,
+                                            defaultSpawnPosition.z + piece_Z*grid_spacing);
+                Instantiate(pieceDict[entry.Value], spawnPos, this.transform.rotation, this.transform);
+            }
+            
+        }
+
+        surface.BuildNavMesh();
+
+        yield return null;
     }
 
     void TestInitializeStructure()
@@ -104,9 +110,10 @@ public class BuildingGenerator : MonoBehaviour
         structureDict.Add( (4,1,2), "B4" );
         structureDict.Add( (4,1,3), "B4" );
         structureDict.Add( (4,1,4), "C3" );
-
-
-        ////////////////////////////////
+    }
+    
+    void InitializeDictionary()
+    {
         pieceDict.Add( "A1", piece_A1 );
         pieceDict.Add( "A2", piece_A2 );
         pieceDict.Add( "B1", piece_B1 );

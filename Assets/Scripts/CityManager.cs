@@ -8,63 +8,157 @@ public class CityManager : MonoBehaviour
 
     public script_MapElitesGenerator mapElites;
 
-    void Start(){
-        GenerateCity();
+    private enum Direction{
+        north,
+        south,
+        west,
+        east
     }
 
-    private void GenerateCity()
+
+    public void GenerateCity()
     {
 
-        //blockSpawner.spawnBlocks(testMatrix);
-        //blockSpawner.spawnBlocks2D(twoDtestMatrix);
-
-        //Test method, loop through the full contents of a map elites grid, generate each town in series with an offset between
-        
         mapElitesTown[,] townGrid = mapElites.runMapElites();
 
+        //Spawn blocks in MAP Elites style grid formation
+        //spawnBlocksGridForm(townGrid, true);
+
+        //Spawn them in a spiral
+        spawnBlocksSpiralForm(townGrid, true);
+
+        //Thomas, your chunk should hopefully be able to plug in here
+        //This method generates all of the buildings in the right formation, but passing in false stops it generating my ugly blocks, leaving the space clear for WFC cleverness
+        //Comment out the above spawnBlocksSpiralForm() method when you're ready to hook into this
+        /*
+        ArrayList buildingList = spawnBlocksSpiralForm(townGrid, false);
+
+        foreach  (building b in buildingList){
+
+            //Array size two of form [x,z] cordinate
+            int[] northWestCorner = b.getNWCorner();
+            //Array size two of form [x,z] cordinate
+            int[] southEastCorner = b.getSECorner();
+            //Array size two of form [x,z] specifying offset of this building from the parent
+            //This means, true corner location will end up being northWestCorner + offset
+            int[] offset = b.getxyOffset();
+
+            int height = b.getHeight();
+
+            //Instantiate your object here
+            Instantiate new WFCBuilding();
+        }
+        */
+
+
+
+    }
+
+    private ArrayList spawnBlocksGridForm(mapElitesTown[,] meGrid, bool spawnBlocks){
         int xoffset = 0;
         int zoffset = 0;
 
         ArrayList allBuildings = new ArrayList();
 
         //Generate block representations in same form as MAP Elite grid
-        for (int x = 0; x<townGrid.GetLength(0); x++){
-            for (int y = 0; y<townGrid.GetLength(1); y++){
+        for (int x = 0; x<meGrid.GetLength(0); x++){
+            for (int y = 0; y<meGrid.GetLength(1); y++){
                 
                 //Check map elites grid cell has a town in it
-                if (townGrid[x,y]!=null){
-
-                    blockSpawner.spawnBlocks2D(townGrid[x,y].getRepresentation(), xoffset, zoffset);
-                    townGrid[x,y].updateBuildingOffset(new int[]{xoffset, zoffset});
-                    allBuildings.AddRange(townGrid[x,y].getBuildingList());
+                if (meGrid[x,y]!=null){
+                    if (spawnBlocks){
+                        blockSpawner.spawnBlocks2D(meGrid[x,y].getRepresentation(), xoffset, zoffset);
+                    }
+                    meGrid[x,y].updateBuildingOffset(new int[]{xoffset, zoffset});
+                    allBuildings.AddRange(meGrid[x,y].getBuildingList());
                 }
                 else {
                     //Debug.Log("Final cell empty");
                 }
                 xoffset += 11;
-
             }
-            //Generate the chunks 
             zoffset+= 11;
             xoffset = 0;
         }
 
+        return allBuildings;
 
+    }
 
+    private ArrayList spawnBlocksSpiralForm(mapElitesTown[,] meGrid, bool spawnBlocks){
+        int xoffset = 0;
+        int zoffset = 0;
 
-        //Testing stuff to ignore
-        /*
-        mapElitesTown[] testDuo = mapElites.runMapElites();
+        ArrayList allBuildings = new ArrayList();
 
-        blockSpawner.spawnBlocks2D(testDuo[0].getRepresentation(), 0, 0);
-        blockSpawner.spawnBlocks2D(testDuo[1].getRepresentation(), 0, 20);
-        ArrayList testBuildingList = testDuo[1].getBuildingList();
+        Direction currDirection = Direction.east;
+        //Number of times we have done each side (we need to do each length twice for a spiral)
+        int sideCount = 0;
+        //Store the current side length of the spiral we're drawning
+        int currentSideLength=1;
+        //Store the current number of steps we have done of current side
+        int stepCount = 0;
+        
+        //Amount we separate each chunk spawn by
+        int offsetAmount = 11;
 
-        foreach(building building in testBuildingList){
-            building.printInfo();
+        for (int x = meGrid.GetLength(0)-1; x>0; x--){
+            for (int y = meGrid.GetLength(1)-1; y>0; y--){
+                
+                //Check map elites grid cell has a town in it
+                if (meGrid[x,y]!=null){
+                    if (spawnBlocks){
+                        blockSpawner.spawnBlocks2D(meGrid[x,y].getRepresentation(), xoffset, zoffset);
+                    }
+                    meGrid[x,y].updateBuildingOffset(new int[]{xoffset, zoffset});
+                    allBuildings.AddRange(meGrid[x,y].getBuildingList());
+
+                    if(currDirection == Direction.east){
+                        xoffset+=offsetAmount;
+                    }
+                    else if(currDirection == Direction.north){
+                        zoffset+=offsetAmount;
+                    }
+                    else if(currDirection == Direction.west){
+                        xoffset-=offsetAmount;
+                    }
+                    else if(currDirection == Direction.south){
+                        zoffset-=offsetAmount;
+                    }
+
+                    //If we still have progress to make on this side, keep going
+                    if (stepCount<currentSideLength){
+                        stepCount+=1;
+                    }
+                    //If were at the end of the side, change direction
+                    else {
+                        stepCount = 0;
+                        sideCount+=1;
+
+                        if(currDirection == Direction.east){
+                            currDirection=Direction.north;
+                        }
+                        else if(currDirection == Direction.north){
+                            currDirection=Direction.west;
+                        }
+                        else if(currDirection == Direction.west){
+                            currDirection=Direction.south;
+                        }
+                        else if(currDirection == Direction.south){
+                            currDirection=Direction.east;
+                        }
+
+                        //If we've done this side length twice, increase target length
+                        if (sideCount==2){
+                            currentSideLength+=1;
+                            sideCount =0;
+                        }
+                    }
+                }
+            }
         }
-        */
 
+        return allBuildings;
 
     }
 

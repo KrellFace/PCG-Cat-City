@@ -82,6 +82,14 @@ public class WFC
         }
     }
 
+    public Dictionary<(int,int,int), string> GetFinalStructure() {
+        Dictionary<(int,int,int), string> final = new Dictionary<(int,int,int), string>();
+        foreach ((int,int,int) c in site.Keys) {
+            final.Add( c, site[c][0] );
+        }
+        return final;
+    }
+
     //////////////////////////
     // Helper functions
     //////////////////////////
