@@ -7,9 +7,6 @@ public class BuildingGenerator : MonoBehaviour
 {
     public WFC scriptWFC;
     public NavMeshSurface surface;
-
-    public GameObject basicColumn;
-    public GameObject basicBlock;
     
     public GameObject piece_A1;
     public GameObject piece_A2;
@@ -21,8 +18,8 @@ public class BuildingGenerator : MonoBehaviour
     public GameObject piece_C2;
     public GameObject piece_C3;
 
-    public int xOffset = 0;
-    public int zOffset = 0;
+    //public int xOffset = 0;
+    //public int zOffset = 0;
     public float yOffset = 2f;
     public float grid_spacing = 2f;
 
@@ -30,22 +27,33 @@ public class BuildingGenerator : MonoBehaviour
     Dictionary<string, GameObject> pieceDict = new Dictionary<string, GameObject>();
 
     // Start is called before the first frame update
+    /*
     IEnumerator Start()
     {
-        //TestInitializeStructure();
-        InitializeDictionary();
+        Generate();
 
+        yield return null;
+    }*/
+    
+    public void Init () {
+        TestInitializeStructure();
+        InitializeDictionary();
+    }
+    
+    public void Generate(int xOffset, int zOffset) // xOffset and zOffset provided by CityManager per building site
+    {
         WFC WFC = new WFC();
         WFC.Initialize(5,1,1);
         WFC.RunWFC();
-        WFC.PrintVisitableSpace();
+        //WFC.PrintVisitableSpace();
         Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
 
         Vector3 defaultSpawnPosition = this.transform.position;
-        foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
+        foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
+        //foreach(KeyValuePair<(int,int,int), string> entry in structureDictFromWFC)
         {
             if ( (entry.Value!="G") && (entry.Value!="N") && (entry.Value!="X") && (entry.Value!="T") ) {
-                Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
+                //Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
 
                 int piece_X = entry.Key.Item1;
                 int piece_Y = entry.Key.Item3 - 1;
@@ -60,8 +68,6 @@ public class BuildingGenerator : MonoBehaviour
         }
 
         surface.BuildNavMesh();
-
-        yield return null;
     }
 
     void TestInitializeStructure()
