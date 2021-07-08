@@ -53,7 +53,7 @@ public class CityManager : MonoBehaviour
             int[] originCorner = b.getAbsNWCorner();
             Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
 
-            buildingGenerator.Generate(originCorner[0]*20, originCorner[1]*20);
+            buildingGenerator.Generate(originCorner[0]*5, originCorner[1]*5);
 
             Debug.Log("foreach success");
 
