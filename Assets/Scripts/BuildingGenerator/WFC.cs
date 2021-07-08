@@ -61,7 +61,8 @@ public class WFC
     public void RunWFC() {
         int iteration = 0;
         while (!_IsCollapsedAll()) {
-            (int,int,int) collapsed_coord = _CollapseLowestEntropy();
+            //(int,int,int) collapsed_coord = _CollapseLowestEntropy();
+            (int,int,int) collapsed_coord = _CollapseViaHeuristics();
             bool res = _PropagateFrom(collapsed_coord);
             iteration ++;
 
@@ -160,8 +161,37 @@ public class WFC
         }
         return coords;
     }
+    
+    private (int,int,int) _CollapseViaHeuristics() {
+        // Find a lowest (z-value) collapseable coord, then
+        // collapse it with a probability distribution depending on z-value
+        // such that when z-value is large relatively to Z, roof-units have higher probability of being chosen.
+        
+        int min_z = planZPadded*2; // arbitrarily large number
+        foreach(var coord in coordCollapseable) {
+            if ( (coord.Item3 < min_z) && (site[coord].Count > 1) ) {
+                min_z = coord.Item3;
+            }
+        }
+        List<(int,int,int)> candidates = new List<(int,int,int)>();
+        foreach(var coord in coordCollapseable) { 
+            if ( (coord.Item3 == min_z) && (site[coord].Count > 1) ) {
+                candidates.Add(coord);
+            }
+        }
 
-    // Find the coord of lowest-entropy to collapse
+        // pick a coord to collapse
+        int index = rnd.Next(candidates.Count);
+        (int,int,int) chosen_coord = candidates[index];
+
+        // collapse to a random state at that coord
+        index = rnd.Next(site[chosen_coord].Count);
+        site[chosen_coord] = new List<string>() {site[chosen_coord][index]};
+
+        return chosen_coord;
+    }
+
+    // Find the coord of lowest-entropy to collapse; warning: this can result in hanging when the site space is nontrivially large e.g. (x,y,z) = (3,3,5)
     private (int,int,int) _CollapseLowestEntropy() {
         int min_len = 10000;
         foreach(var coord in coordCollapseable) { 
@@ -172,7 +202,7 @@ public class WFC
 
         List<(int,int,int)> candidates = new List<(int,int,int)>();
         foreach(var coord in coordCollapseable) { 
-            if (site[coord].Count == min_len) {
+            if ( (site[coord].Count == min_len) && (site[coord].Count > 1) ) {
                 candidates.Add(coord);
             }
         }
