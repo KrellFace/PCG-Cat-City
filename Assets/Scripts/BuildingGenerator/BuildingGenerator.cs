@@ -42,11 +42,10 @@ public class BuildingGenerator : MonoBehaviour
     
     public void Generate(int xOffset, int zOffset) // xOffset and zOffset provided by CityManager per building site
     {
-        WFC WFC = new WFC();
+        /*WFC WFC = new WFC();
         WFC.Initialize(5,1,1);
         WFC.RunWFC();
-        //WFC.PrintVisitableSpace();
-        Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
+        Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();*/
 
         Vector3 defaultSpawnPosition = this.transform.position;
         foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
@@ -59,15 +58,15 @@ public class BuildingGenerator : MonoBehaviour
                 int piece_Y = entry.Key.Item3 - 1;
                 int piece_Z = entry.Key.Item2;
 
-                Vector3 spawnPos = new Vector3(defaultSpawnPosition.x + piece_X*grid_spacing, 
+                Vector3 spawnPos = new Vector3(defaultSpawnPosition.x + piece_X*grid_spacing + xOffset, 
                                             defaultSpawnPosition.y + piece_Y*grid_spacing + yOffset,
-                                            defaultSpawnPosition.z + piece_Z*grid_spacing);
+                                            defaultSpawnPosition.z + piece_Z*grid_spacing + zOffset);
                 Instantiate(pieceDict[entry.Value], spawnPos, this.transform.rotation, this.transform);
             }
             
         }
 
-        surface.BuildNavMesh();
+        //surface.BuildNavMesh();
     }
 
     void TestInitializeStructure()

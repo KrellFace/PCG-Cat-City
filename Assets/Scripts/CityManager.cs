@@ -36,18 +36,23 @@ public class CityManager : MonoBehaviour
         ArrayList buildingList = spawnBlocksSpiralForm(townGrid, false);
 
         buildingGenerator = gameObject.GetComponent<BuildingGenerator>();
+        buildingGenerator.Init();
 
+        int test_iter=0;
         foreach  (building b in buildingList){
 
             int height = b.getHeight();
             int[] originCorner = b.getAbsNWCorner();
             Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
 
-            buildingGenerator.Init();
-            buildingGenerator.Generate(originCorner[0], originCorner[1]);
+            buildingGenerator.Generate(originCorner[0]*20, originCorner[1]*20);
 
-            //Instantiate your object here
-            //Instantiate new WFCBuilding();
+            Debug.Log("foreach success");
+
+            if (test_iter==1) {
+                break;
+            }
+            test_iter ++;
         }
         
 

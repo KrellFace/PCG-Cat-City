@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 29553555}
   - component: {fileID: 29553554}
   - component: {fileID: 29553556}
+  - component: {fileID: 29553557}
   m_Layer: 0
   m_Name: CityManager
   m_TagString: Untagged
@@ -179,6 +180,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3dc59c96150e114f81e64b23cad729a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &29553557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 29553553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe719773d544bc740aa3875a81dee1e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  surface: {fileID: 221656932}
+  piece_A1: {fileID: 919132149155446097, guid: 581ee91789e8bd247aad81f2e17cb2e2, type: 3}
+  piece_A2: {fileID: 919132149155446097, guid: b70b8e779bb55474fa27a8f26335e270, type: 3}
+  piece_B1: {fileID: 919132149155446097, guid: 9ca1ae5727a34fc4287ec6b5c89670d1, type: 3}
+  piece_B2: {fileID: 919132149155446097, guid: 51eb38fe35afec84b908bd70e3a140a7, type: 3}
+  piece_B3: {fileID: 919132149155446097, guid: 51eb38fe35afec84b908bd70e3a140a7, type: 3}
+  piece_B4: {fileID: 919132149155446097, guid: 51eb38fe35afec84b908bd70e3a140a7, type: 3}
+  piece_C1: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
+  piece_C2: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
+  piece_C3: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
+  yOffset: 2
+  grid_spacing: 2
 --- !u!1 &221656927
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,6 +216,7 @@ GameObject:
   - component: {fileID: 221656930}
   - component: {fileID: 221656929}
   - component: {fileID: 221656928}
+  - component: {fileID: 221656932}
   m_Layer: 0
   m_Name: plane_CityFloor
   m_TagString: Untagged
@@ -273,6 +299,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &221656932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 221656927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.06666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &909181857
 GameObject:
   m_ObjectHideFlags: 0
