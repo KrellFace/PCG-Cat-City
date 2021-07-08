@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BuildingGenerator : MonoBehaviour
 {
+    public WFC scriptWFC;
+
     public GameObject basicColumn;
     public GameObject basicBlock;
     
@@ -38,8 +40,7 @@ public class BuildingGenerator : MonoBehaviour
 
         foreach(KeyValuePair<(int,int,int), string> entry in structureDict)
         {
-            // do something with entry.Value or entry.Key
-            Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
+            //Debug.Log( string.Format("{0},{1},{2}: {3}", entry.Key.Item1, entry.Key.Item2, entry.Key.Item3, entry.Value) );
 
             int piece_X = entry.Key.Item1;
             int piece_Y = entry.Key.Item3 - 1;
@@ -50,6 +51,11 @@ public class BuildingGenerator : MonoBehaviour
                                            defaultSpawnPosition.z + piece_Z*grid_spacing);
             Instantiate(pieceDict[entry.Value], spawnPos, this.transform.rotation, this.transform);
         }
+
+        WFC WFC = new WFC();
+        WFC.Initialize(3,1,1);
+        WFC.RunWFC();
+        WFC.PrintVisitableSpace();
     }
 
     void TestInitializeStructure()
