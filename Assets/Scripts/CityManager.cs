@@ -8,6 +8,10 @@ public class CityManager : MonoBehaviour
 
     public script_MapElitesGenerator mapElites;
 
+    public GameObject playerCatPrefab;
+    public GameObject mainCamera;
+    public Canvas canvas;
+
     private BuildingGenerator buildingGenerator;
 
     private enum Direction{
@@ -17,10 +21,14 @@ public class CityManager : MonoBehaviour
         east
     }
 
-
     public void GenerateCity()
     {
+        StartCoroutine(GenerateCityCoroutine());
+    }
 
+
+    IEnumerator GenerateCityCoroutine()
+    {
         mapElitesTown[,] townGrid = mapElites.runMapElites();
 
         //Spawn blocks in MAP Elites style grid formation
@@ -54,8 +62,12 @@ public class CityManager : MonoBehaviour
             }
             test_iter ++;
         }
-        
 
+        mainCamera.SetActive(false);
+        canvas.enabled = false;
+        Instantiate(playerCatPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+        yield return null;
     }
 
     private ArrayList spawnBlocksGridForm(mapElitesTown[,] meGrid, bool spawnBlocks){

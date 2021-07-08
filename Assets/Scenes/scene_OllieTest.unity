@@ -154,6 +154,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockSpawner: {fileID: 1873441511}
   mapElites: {fileID: 29553556}
+  playerCatPrefab: {fileID: 4278992897418092245, guid: 1c4b0c48ece9ac843b7065dceaaeba76,
+    type: 3}
+  mainCamera: {fileID: 909181857}
+  canvas: {fileID: 1465593050}
 --- !u!4 &29553555
 Transform:
   m_ObjectHideFlags: 0
@@ -353,7 +357,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909181857}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &909181859
 Camera:
   m_ObjectHideFlags: 0
@@ -840,6 +844,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1873441512}
   - component: {fileID: 1873441511}
+  - component: {fileID: 1873441513}
   m_Layer: 0
   m_Name: CityGenerator
   m_TagString: Untagged
@@ -877,6 +882,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1873441513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873441510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.06666667
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 0}
 --- !u!1 &1942046524
 GameObject:
   m_ObjectHideFlags: 0
