@@ -8,6 +8,10 @@ public class CityManager : MonoBehaviour
 
     public script_MapElitesGenerator mapElites;
 
+    public GameObject playerCatPrefab;
+    public GameObject mainCamera;
+    public Canvas canvas;
+
     private enum Direction{
         north,
         south,
@@ -18,14 +22,15 @@ public class CityManager : MonoBehaviour
 
     public void GenerateCity()
     {
+        StartCoroutine(GenerateCityCoroutine());
 
-        mapElitesTown[,] townGrid = mapElites.runMapElites();
+        //mapElitesTown[,] townGrid = mapElites.runMapElites();
 
         //Spawn blocks in MAP Elites style grid formation
         //spawnBlocksGridForm(townGrid, true);
 
         //Spawn them in a spiral
-        spawnBlocksSpiralForm(townGrid, true);
+        //spawnBlocksSpiralForm(townGrid, true);
 
         //Thomas, your chunk should hopefully be able to plug in here
         //This method generates all of the buildings in the right formation, but passing in false stops it generating my ugly blocks, leaving the space clear for WFC cleverness
@@ -50,6 +55,20 @@ public class CityManager : MonoBehaviour
         }
         */
 
+    }
+
+    IEnumerator GenerateCityCoroutine()
+    {
+        mapElitesTown[,] townGrid = mapElites.runMapElites();
+
+        //Spawn them in a spiral
+        spawnBlocksSpiralForm(townGrid, true);
+
+        mainCamera.SetActive(false);
+        canvas.enabled = false;
+        Instantiate(playerCatPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+
+        yield return null;
     }
 
     private ArrayList spawnBlocksGridForm(mapElitesTown[,] meGrid, bool spawnBlocks){
