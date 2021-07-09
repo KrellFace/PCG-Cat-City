@@ -250,7 +250,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29553553}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9292791, y: 0.8428812, z: -1.0981276}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -677,8 +677,8 @@ MonoBehaviour:
   m_Text: "Welcome to Cat City! \n\nA procedurally generated town inhabited only
     by stray cats. Can you discover the dark secret of what happend here?\n(You can't
     im afraid, no dark secrets have been implemented yet)\n\nThis tech demo was created
-    by:\nThomas Hsueh, \nGeorge Karafotias & \nOliver Withington\n\nAs part of 2021's
-    Game AI Summer School\n"
+    by:\nThomas Hsueh, \nGeorgios Karafotias & \nOliver Withington\n\nAs part of
+    2021's Game AI Summer School\n"
 --- !u!222 &325793476
 CanvasRenderer:
   m_ObjectHideFlags: 0

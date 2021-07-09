@@ -8,7 +8,7 @@ A procedurally generated town inhabited only by stray cats. Can you discover the
 
 This tech demo was created by:
 Thomas Hsueh, 
-George Karafotias & 
+Georgios Karafotias & 
 Oliver Withington
 
 As part of 2021's Game AI Summer School
