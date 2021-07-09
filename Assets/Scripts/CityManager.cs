@@ -97,7 +97,7 @@ public class CityManager : MonoBehaviour
     {
         Vector3 groundOrigin = surface.transform.position;
         float spawnRadius = surface.transform.localScale.x * 2.5f;
-        GameObject catsParent = new GameObject("catsParent");
+        GameObject catsParent = new GameObject("CatsParent");
         catsParent.transform.position = groundOrigin;
 
         for (int i = 0; i < numberOfCats; i++)
