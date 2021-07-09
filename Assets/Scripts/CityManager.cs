@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.AI;
 
 public class CityManager : MonoBehaviour
@@ -15,6 +16,7 @@ public class CityManager : MonoBehaviour
     public GameObject playerCatPrefab;
     public GameObject mainCamera;
     public Canvas canvas;
+    public Canvas ingameCanvas;
 
     public GameObject catNPCPrefab;
 
@@ -86,6 +88,7 @@ public class CityManager : MonoBehaviour
 
         mainCamera.SetActive(false);
         canvas.enabled = false;
+        ingameCanvas.enabled = true;
         Instantiate(playerCatPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
         SpawnNPCCats();
@@ -222,6 +225,13 @@ public class CityManager : MonoBehaviour
 
     public void setCatCount(int newCount){
         this.numberOfCats = newCount;
+    }
+
+    public void Update(){
+        if (Input.GetKeyDown("r")){
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+        }
+
     }
 
 
