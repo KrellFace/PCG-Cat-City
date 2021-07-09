@@ -366,7 +366,7 @@ MonoBehaviour:
   piece_C2: {fileID: 919132149155446097, guid: edd26c5619017c246953edcba3ebe96e, type: 3}
   piece_C3: {fileID: 919132149155446097, guid: 4c13bbc5951966a458191d3faf7858af, type: 3}
   piece_C4: {fileID: 919132149155446097, guid: 797ee0585f8f80242974c7b768643d3a, type: 3}
-  yOffset: 1
+  yOffset: 0.95
   vertMultiplier: 2
   horiMultipler: 2.1
   horiOffsetMultiplier: 2
