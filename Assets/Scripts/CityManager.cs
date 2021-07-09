@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,6 +15,9 @@ public class CityManager : MonoBehaviour
     public GameObject playerCatPrefab;
     public GameObject mainCamera;
     public Canvas canvas;
+
+    public GameObject catNPCPrefab;
+    public int numberOfCats = 20;
 
     private BuildingGenerator buildingGenerator;
 
@@ -78,7 +82,21 @@ public class CityManager : MonoBehaviour
         canvas.enabled = false;
         Instantiate(playerCatPrefab, new Vector3(0, 0, 0), Quaternion.identity);
 
+        SpawnNPCCats();
+
         yield return null;
+    }
+
+    private void SpawnNPCCats()
+    {
+        Vector3 groundOrigin = surface.transform.position;
+        float spawnRadius = surface.transform.localScale.x * 2.5f;
+
+        for (int i = 0; i < numberOfCats; i++)
+        {
+            Vector2 randomSpawnPosition = UnityEngine.Random.insideUnitCircle * spawnRadius;
+            Instantiate(catNPCPrefab, new Vector3(randomSpawnPosition.x, 0, randomSpawnPosition.y), Quaternion.identity);
+        }
     }
 
     private ArrayList spawnBlocksGridForm(mapElitesTown[,] meGrid, bool spawnBlocks){
