@@ -18,7 +18,7 @@ public class MapElitesSizeSlider : MonoBehaviour
 	// Invoked when the value of the slider changes.
 	public void ValueChangeCheck()
 	{
-		cityManager.setCatCount((int)meSizeSlider.value);
+		cityManager.setMapElitesGridSize((int)meSizeSlider.value);
         
 	}
 }
