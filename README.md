@@ -19,5 +19,7 @@ Procedurally generate towns and then populate them with lots of autonomous stray
 
 Technology used:
 MAP Elites to generate the underlying structure
+
 Wave Form Collapse to dress the buildings in aesthetically pleasing structures
+
 Navmeshes and Finite State Machines for the stray cats
