@@ -49,7 +49,7 @@ public class BuildingGenerator : MonoBehaviour
     public void Generate(int xOffset, int zOffset, int H, int X, int Y) // xOffset and zOffset provided by CityManager per building site
     {
         WFC WFC = new WFC();
-        WFC.Initialize(3,3,3);
+        WFC.Initialize(3,2,2);
         WFC.RunWFC();
         Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
 
