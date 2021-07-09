@@ -91,11 +91,13 @@ public class CityManager : MonoBehaviour
     {
         Vector3 groundOrigin = surface.transform.position;
         float spawnRadius = surface.transform.localScale.x * 2.5f;
+        GameObject catsParent = new GameObject("catsParent");
+        catsParent.transform.position = groundOrigin;
 
         for (int i = 0; i < numberOfCats; i++)
         {
             Vector2 randomSpawnPosition = UnityEngine.Random.insideUnitCircle * spawnRadius;
-            Instantiate(catNPCPrefab, new Vector3(randomSpawnPosition.x, 0, randomSpawnPosition.y), Quaternion.identity);
+            Instantiate(catNPCPrefab, groundOrigin + new Vector3(randomSpawnPosition.x, 0, randomSpawnPosition.y), Quaternion.identity, catsParent.transform);
         }
     }
 
