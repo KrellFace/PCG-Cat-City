@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class BuildingGenerator : MonoBehaviour
 {
     public WFC scriptWFC;
-    public NavMeshSurface surface;
     
     public GameObject piece_A1;
     public GameObject piece_A2;
@@ -72,8 +71,6 @@ public class BuildingGenerator : MonoBehaviour
             }
             
         }
-
-        //surface.BuildNavMesh();
     }
 
     void TestInitializeStructure()

@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CityManager : MonoBehaviour
 {
     public script_BlockSpawner blockSpawner;
 
     public script_MapElitesGenerator mapElites;
+
+    public NavMeshSurface surface;
 
     public GameObject playerCatPrefab;
     public GameObject mainCamera;
@@ -69,7 +72,7 @@ public class CityManager : MonoBehaviour
         //buildingGenerator.Generate(0, 0);
         //buildingGenerator.Generate(1, 0);
 
-
+        surface.BuildNavMesh();
 
         mainCamera.SetActive(false);
         canvas.enabled = false;
