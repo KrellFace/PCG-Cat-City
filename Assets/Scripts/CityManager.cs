@@ -79,10 +79,9 @@ public class CityManager : MonoBehaviour
 
             buildingGenerator.Generate(originCorner[0]*1, originCorner[1]*1, height, x, z);
         }
-
-        // Using the below samples to tune inter-building spacing scale
-        //buildingGenerator.Generate(0, 0);
-        //buildingGenerator.Generate(1, 0);
+        
+        // Using the below samples to tune inter-building spacing scale and yOffset
+        //buildingGenerator.Generate(0, 0, 2, 1, 1);
 
         surface.BuildNavMesh();
 

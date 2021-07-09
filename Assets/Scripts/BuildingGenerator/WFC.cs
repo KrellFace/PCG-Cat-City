@@ -62,6 +62,9 @@ public class WFC
 
     public void RunWFC() {
         int iteration = 0;
+        int attempt = 0;
+        int maxAttempt = 200;
+
         while (!_IsCollapsedAll()) {
             //(int,int,int) collapsed_coord = _CollapseLowestEntropy();
             (int,int,int) collapsed_coord = _CollapseViaHeuristics();
@@ -72,6 +75,11 @@ public class WFC
                 _ResetSite(maxH, planX, planY);
                 iteration = 0;
                 Debug.Log("RunWFC(): reset.");
+
+                if (attempt > maxAttempt) {
+                    Debug.Log("RunWFC(): attempt > the predefined stopping number (" + maxAttempt + "), quiting exploration now.");
+                    return;
+                }
                 continue;
             }
         }
