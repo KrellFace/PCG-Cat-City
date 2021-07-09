@@ -47,21 +47,22 @@ public class CityManager : MonoBehaviour
         buildingGenerator.Init();
 
         
-        int test_iter=0;
         foreach  (building b in buildingList){
+            //b.printInfo();
 
             int height = b.getHeight();
             int[] originCorner = b.getAbsNWCorner();
-            Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
+            int[] farCorner = b.getAbsSECorner();
+            int x = farCorner[0] - originCorner[0];
+            int z = farCorner[1] - originCorner[1];
+            //Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
+            //Debug.Log("Site plan: " + x + " x " + z);
 
-            buildingGenerator.Generate(originCorner[0]*1, originCorner[1]*1);
+            int[] NWCorner = b.getNWCorner();
+            int[] SECorner = b.getSECorner();
+            Debug.Log(">>> NWCorner=" + NWCorner[0] + "," + NWCorner[1] + "; SECorner=" + SECorner[0] + "," + SECorner[1]);
 
-            Debug.Log("foreach success");
-
-            if (test_iter>100) { // trying to bound run time
-                break;
-            }
-            test_iter ++;
+            buildingGenerator.Generate(originCorner[0]*1, originCorner[1]*1, height, x, z);
         }
 
         // Using the below samples to tune inter-building spacing scale

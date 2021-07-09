@@ -197,17 +197,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   surface: {fileID: 221656932}
-  piece_A1: {fileID: 919132149155446097, guid: 581ee91789e8bd247aad81f2e17cb2e2, type: 3}
-  piece_A2: {fileID: 919132149155446097, guid: b70b8e779bb55474fa27a8f26335e270, type: 3}
-  piece_B1: {fileID: 919132149155446097, guid: 9ca1ae5727a34fc4287ec6b5c89670d1, type: 3}
-  piece_B2: {fileID: 919132149155446097, guid: 51eb38fe35afec84b908bd70e3a140a7, type: 3}
-  piece_B3: {fileID: 919132149155446097, guid: 51eb38fe35afec84b908bd70e3a140a7, type: 3}
-  piece_B4: {fileID: 919132149155446097, guid: 51eb38fe35afec84b908bd70e3a140a7, type: 3}
-  piece_C1: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
-  piece_C2: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
-  piece_C3: {fileID: 919132149155446097, guid: c2fe3a3b0849b39489b701a70537c04a, type: 3}
+  piece_A1: {fileID: 919132149155446097, guid: 08d659a227d8d6441ae527845de3bd9d, type: 3}
+  piece_A2: {fileID: 919132149155446097, guid: 47f9ed6b76a5c4d44afa67399d6fc12f, type: 3}
+  piece_A3: {fileID: 919132149155446097, guid: dcf5ee702b45bf04eaf36ff25d5bf5cd, type: 3}
+  piece_A4: {fileID: 919132149155446097, guid: 3a5c2fb601245064e87558a9c3c6ac2b, type: 3}
+  piece_B1: {fileID: 919132149155446097, guid: 1bfca17bc17cae547823a7e5df53403d, type: 3}
+  piece_B3: {fileID: 919132149155446097, guid: 8c675133e36f01a44aec5266f666ba9c, type: 3}
+  piece_B4: {fileID: 919132149155446097, guid: af6b9a86714e11a4ca3570c501e32357, type: 3}
+  piece_C1: {fileID: 919132149155446097, guid: e3ec12a944c667b42bae2e4bb21499ca, type: 3}
+  piece_C2: {fileID: 919132149155446097, guid: edd26c5619017c246953edcba3ebe96e, type: 3}
+  piece_C3: {fileID: 919132149155446097, guid: 4c13bbc5951966a458191d3faf7858af, type: 3}
+  piece_C4: {fileID: 919132149155446097, guid: 797ee0585f8f80242974c7b768643d3a, type: 3}
   yOffset: 0.165
-  grid_spacing: 2
+  vertMultiplier: 2
+  horiMultipler: 2.1
+  horiOffsetMultiplier: 2
 --- !u!1 &221656927
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,10 +1000,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1942046524}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.32374436, y: 0.5825634, z: -0.27165374, w: 0.6942721}
   m_LocalPosition: {x: 0.05716324, y: 2.6124954, z: -4.3332815}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1713796018}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: 80, z: 0}

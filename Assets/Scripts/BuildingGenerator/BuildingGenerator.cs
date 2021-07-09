@@ -10,18 +10,24 @@ public class BuildingGenerator : MonoBehaviour
     
     public GameObject piece_A1;
     public GameObject piece_A2;
+    public GameObject piece_A3;
+    public GameObject piece_A4;
+
     public GameObject piece_B1;
-    public GameObject piece_B2;
     public GameObject piece_B3;
     public GameObject piece_B4;
+
     public GameObject piece_C1;
     public GameObject piece_C2;
     public GameObject piece_C3;
+    public GameObject piece_C4;
 
     //public int xOffset = 0;
     //public int zOffset = 0;
     public float yOffset = 2f;
-    public float grid_spacing = 2f;
+    public float vertMultiplier = 2f;
+    public float horiMultipler = 1f;
+    public float horiOffsetMultiplier = 1f;
 
     Dictionary<(int,int,int), string> structureDict = new Dictionary<(int,int,int), string>(); 
     Dictionary<string, GameObject> pieceDict = new Dictionary<string, GameObject>();
@@ -40,10 +46,10 @@ public class BuildingGenerator : MonoBehaviour
         InitializeDictionary();
     }
     
-    public void Generate(int xOffset, int zOffset) // xOffset and zOffset provided by CityManager per building site
+    public void Generate(int xOffset, int zOffset, int H, int X, int Y) // xOffset and zOffset provided by CityManager per building site
     {
         WFC WFC = new WFC();
-        WFC.Initialize(5,1,1);
+        WFC.Initialize(3,3,3);
         WFC.RunWFC();
         Dictionary<(int,int,int), string> structureDictFromWFC = WFC.GetFinalStructure();
 
@@ -59,9 +65,9 @@ public class BuildingGenerator : MonoBehaviour
                 int piece_Y = entry.Key.Item3 - 1;
                 int piece_Z = entry.Key.Item2;
 
-                Vector3 spawnPos = new Vector3(defaultSpawnPosition.x + piece_X*grid_spacing + xOffset, 
-                                            defaultSpawnPosition.y + piece_Y*grid_spacing + yOffset,
-                                            defaultSpawnPosition.z + piece_Z*grid_spacing + zOffset);
+                Vector3 spawnPos = new Vector3(defaultSpawnPosition.x + piece_X*horiMultipler  + xOffset*horiOffsetMultiplier, 
+                                               defaultSpawnPosition.y + piece_Y*vertMultiplier + yOffset,
+                                               defaultSpawnPosition.z + piece_Z*horiMultipler  + zOffset*horiOffsetMultiplier);
                 Instantiate(pieceDict[entry.Value], spawnPos, this.transform.rotation, this.transform);
             }
             
@@ -72,8 +78,19 @@ public class BuildingGenerator : MonoBehaviour
 
     void TestInitializeStructure()
     {
-        structureDict.Add( (1,1,1), "A2" );
-        structureDict.Add( (1,1,2), "C1" );
+        /*
+        structureDict.Add( (1,1,1), "A1" );
+        structureDict.Add( (1,1,2), "B1" );
+        structureDict.Add( (1,1,3), "B1" );
+        structureDict.Add( (1,1,4), "B1" );
+        structureDict.Add( (1,1,5), "C1" );
+        */
+
+        structureDict.Add( (2,1,1), "A3" );
+        structureDict.Add( (2,1,2), "C3" );
+        
+        structureDict.Add( (1,1,1), "A4" );
+        structureDict.Add( (1,1,2), "C4" );
 
         /*
         structureDict.Add( (1,1,1), "A2" );
@@ -127,13 +144,17 @@ public class BuildingGenerator : MonoBehaviour
     {
         pieceDict.Add( "A1", piece_A1 );
         pieceDict.Add( "A2", piece_A2 );
+        pieceDict.Add( "A3", piece_A3 );
+        pieceDict.Add( "A4", piece_A4 );
+
         pieceDict.Add( "B1", piece_B1 );
-        pieceDict.Add( "B2", piece_B2 );
         pieceDict.Add( "B3", piece_B3 );
         pieceDict.Add( "B4", piece_B4 );
+
         pieceDict.Add( "C1", piece_C1 );
         pieceDict.Add( "C2", piece_C2 );
         pieceDict.Add( "C3", piece_C3 );
+        pieceDict.Add( "C4", piece_C4 );
     }
 
     // Update is called once per frame
