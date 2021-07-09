@@ -816,10 +816,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 26
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0
@@ -831,7 +831,7 @@ MonoBehaviour:
     by stray cats. Can you discover the dark secret of what happend here?\n(You can't
     im afraid, no dark secrets have been implemented yet)\n\nThis tech demo was created
     by:\nThomas Hsueh, \nGeorgios Karafotias & \nOliver Withington\n\nAs part of
-    2021's Game AI Summer School\n"
+    2021's Game AI Summer School\n\nMusic source: Stunning Studio Ghibli Soundtracks"
 --- !u!222 &325793476
 CanvasRenderer:
   m_ObjectHideFlags: 0
