@@ -343,7 +343,7 @@ MonoBehaviour:
   animator: {fileID: 5619985934887145615}
   renderer: {fileID: 8384548196954986403}
   maxIdleTime: 5
-  maxWanderDistance: 3
+  maxWanderDistance: 10
 --- !u!1 &1921977085086819228
 GameObject:
   m_ObjectHideFlags: 0
