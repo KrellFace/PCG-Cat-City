@@ -17,6 +17,10 @@ public class CityManager : MonoBehaviour
     public Canvas canvas;
 
     public GameObject catNPCPrefab;
+
+    private int mapElitesGridSize = 5;
+
+    private int mapElitesStepCount = 50000;
     public int numberOfCats = 20;
 
     private BuildingGenerator buildingGenerator;
@@ -28,6 +32,8 @@ public class CityManager : MonoBehaviour
         east
     }
 
+
+
     public void GenerateCity()
     {
         StartCoroutine(GenerateCityCoroutine());
@@ -36,7 +42,7 @@ public class CityManager : MonoBehaviour
 
     IEnumerator GenerateCityCoroutine()
     {
-        mapElitesTown[,] townGrid = mapElites.runMapElites();
+        mapElitesTown[,] townGrid = mapElites.runMapElites(mapElitesGridSize, mapElitesStepCount);
 
         //Spawn blocks in MAP Elites style grid formation
         //spawnBlocksGridForm(townGrid, true);
@@ -208,6 +214,16 @@ public class CityManager : MonoBehaviour
         return allBuildings;
 
     }
+
+    
+    public void setMapElitesGridSize(int newSize){
+        mapElitesGridSize = newSize;
+    }
+
+    public void setCatCount(int newCount){
+        this.numberOfCats = newCount;
+    }
+
 
 
 }

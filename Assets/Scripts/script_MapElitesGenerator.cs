@@ -45,6 +45,15 @@ public class script_MapElitesGenerator : MonoBehaviour
     private float crossoverChance = 0.2f;
 
 
+    //Overload method for when we want to specify some parameters
+    public mapElitesTown[,] runMapElites(int gridSize, int stepCount){
+
+        this.gridSize = gridSize;
+        this.stepCount = stepCount;
+
+        return runMapElites();
+    }
+
 
     //Main method for generating the output town
     public mapElitesTown[,] runMapElites(){
@@ -96,9 +105,6 @@ public class script_MapElitesGenerator : MonoBehaviour
 
         return buildingifyGrid(mapElitesGrid);
         
-        //mapElitesTown notBuilding = getRandomLevelFromGrid(mapElitesGrid);
-        //mapElitesTown building = ConvertToBuildings(notBuilding.getRepresentation());
-        //return new mapElitesTown[]{notBuilding, building};
     }
 
     //Generate random starting town in the form of a 2D int matrix

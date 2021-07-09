@@ -16,9 +16,10 @@ public class building
     }
 
     public void printInfo(){
-        Debug.Log("Buidling Corners: " + getAbsNWCorner()[0] + "," + getAbsNWCorner()[1] + "." +  getAbsNECorner()[0] + "," + getAbsNECorner()[1] + "." +
-            getAbsSWCorner()[0] + "," + getAbsSWCorner()[1] + "." + getAbsSECorner()[0] + "," + getAbsSECorner()[1] + "." +
-            " Building height: " + height);
+        Debug.Log("Buidling Abs Corners: " + getAbsNWCorner()[0] + "," + getAbsNWCorner()[1] + "." +  getAbsNECorner()[0] + "," + getAbsNECorner()[1] + "." +
+                getAbsSWCorner()[0] + "," + getAbsSWCorner()[1] + "." + getAbsSECorner()[0] + "," + getAbsSECorner()[1] + "." +
+                "Buidling Local Corners: " + northWestCorner[0] + "," + northWestCorner[1] + "." +  southEastCorner[0] + "," + southEastCorner[1] + "." +
+                        " Building height: " + height);
     }
 
     public int getHeight(){
