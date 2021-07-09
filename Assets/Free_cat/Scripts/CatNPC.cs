@@ -42,8 +42,8 @@ public class CatNPC : MonoBehaviour
         NavMeshHit navHit;
         if (NavMesh.SamplePosition(randDirection, out navHit, maxWanderDistance, NavMesh.AllAreas))
         {
-            agent.SetDestination(navHit.position);
             animator.SetBool("walk", true);
+            agent.SetDestination(navHit.position);
         }
     }
 
@@ -65,5 +65,8 @@ public class CatNPC : MonoBehaviour
         {
             ChooseIdleOrWander();
         }
+
+        if (agent.velocity.sqrMagnitude > 0.1f)
+            animator.SetBool("walk", true);
     }
 }
