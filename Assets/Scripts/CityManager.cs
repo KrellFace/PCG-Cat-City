@@ -63,17 +63,17 @@ public class CityManager : MonoBehaviour
         foreach  (building b in buildingList){
             //b.printInfo();
 
-            int height = b.getHeight();
+            int height = b.getHeight() + 1; // +1 to prevent height==1, which leads to conflicting roof&ground rules and empty state
             int[] originCorner = b.getAbsNWCorner();
             int[] farCorner = b.getAbsSECorner();
-            int x = farCorner[0] - originCorner[0];
-            int z = farCorner[1] - originCorner[1];
+            int x = farCorner[0] - originCorner[0] + 1;
+            int z = farCorner[1] - originCorner[1] + 1;
             //Debug.Log("originCorner[0]:" + originCorner[0] + " originCorner[1]:" + originCorner[1]);
-            //Debug.Log("Site plan: " + x + " x " + z);
+            Debug.Log("Site plan: (" + x + " x " + z + " x " + height + ")");
 
-            int[] NWCorner = b.getNWCorner();
-            int[] SECorner = b.getSECorner();
-            Debug.Log(">>> NWCorner=" + NWCorner[0] + "," + NWCorner[1] + "; SECorner=" + SECorner[0] + "," + SECorner[1]);
+            //int[] NWCorner = b.getNWCorner();
+            //int[] SECorner = b.getSECorner();
+            //Debug.Log(">>> NWCorner=" + NWCorner[0] + "," + NWCorner[1] + "; SECorner=" + SECorner[0] + "," + SECorner[1]);
 
             buildingGenerator.Generate(originCorner[0]*1, originCorner[1]*1, height, x, z);
         }

@@ -87,8 +87,16 @@ public class WFC
 
     public Dictionary<(int,int,int), string> GetFinalStructure() {
         Dictionary<(int,int,int), string> final = new Dictionary<(int,int,int), string>();
-        foreach ((int,int,int) c in site.Keys) {
-            final.Add( c, site[c][0] );
+        //foreach ((int,int,int) c in site.Keys) {
+        foreach ((int,int,int) c in coordVisitable) {
+            try {
+                final.Add( c, site[c][0] );
+            }
+            catch (Exception e) {
+                Debug.Log("Exception has occurred: " + e);
+                Debug.Log("Exception occurred when c is " + c.ToString());
+            }  
+            
         }
         return final;
     }
